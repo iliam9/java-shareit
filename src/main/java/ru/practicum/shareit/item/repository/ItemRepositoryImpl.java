@@ -60,13 +60,13 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     @Override
     public List<Item> search(final String text) {
-        if (items.isEmpty()) {
+        if (text.isBlank()) {
             return new ArrayList<>();
         }
         return items.values().stream()
                 .filter(Item::getAvailable)
-                .filter(item -> item.getName().toLowerCase().contains(text)
-                        || item.getDescription().toLowerCase().contains(text))
+                .filter(item -> item.getName().toLowerCase().contains(text.toLowerCase())
+                        || item.getDescription().toLowerCase().contains(text.toLowerCase()))
                 .toList();
     }
 

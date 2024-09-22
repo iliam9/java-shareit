@@ -14,9 +14,7 @@ import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
+
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
@@ -26,15 +24,17 @@ public class ItemController {
 
     ItemService itemService;
 
+    private static final String HEADER = "X-Sharer-User-Id";
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto create(@RequestHeader("X-Sharer-User-Id") @NotNull final Integer ownerId,
+    public ItemDto create(@RequestHeader(HEADER) @NotNull final Integer ownerId,
                           @Validated(CreateGroup.class) @RequestBody final ItemDto itemDto) {
         return itemService.create(ownerId, itemDto);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto update(@RequestHeader("X-Sharer-User-Id") @NotNull final Integer ownerId,
+    public ItemDto update(@RequestHeader(HEADER) @NotNull final Integer ownerId,
                           @PathVariable @Positive final Integer itemId,
                           @RequestBody final ItemDto itemDto) {
         return itemService.update(ownerId, itemId, itemDto);
@@ -52,7 +52,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> getOwnerItems(@RequestHeader("X-Sharer-User-Id") @NotNull final Integer ownerId) {
+    public List<ItemDto> getOwnerItems(@RequestHeader(HEADER) @NotNull final Integer ownerId) {
         return itemService.getOwnerItems(ownerId);
     }
 
