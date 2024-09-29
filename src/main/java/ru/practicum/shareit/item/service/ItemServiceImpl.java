@@ -13,10 +13,10 @@ import ru.practicum.shareit.exception.ForbiddenException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.dto.CommentDto;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemResponse;
 import ru.practicum.shareit.item.mapper.CommentMapper;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.mapper.ItemMapper;
+import ru.practicum.shareit.item.dto.ItemResponse;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
@@ -37,9 +37,9 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ItemServiceImpl implements ItemService {
 
-    ItemRepository itemRepository;
-
     UserRepository userRepository;
+
+    ItemRepository itemRepository;
 
     ItemMapper itemMapper;
 
@@ -81,10 +81,9 @@ public class ItemServiceImpl implements ItemService {
         if ((Objects.nonNull(itemDto.getAvailable()))) {
             item.setAvailable(itemDto.getAvailable());
         }
-        final Item newItem = itemRepository.save(item);
-        log.info("Вещь с id {} успешно обновлена", newItem.getId());
-        return itemMapper.toItemDto(newItem);
-
+        final Item updateItem = itemRepository.save(item);
+        log.info("Вещь с id {} успешно обновлена", updateItem.getId());
+        return itemMapper.toItemDto(updateItem);
     }
 
     @Override
@@ -131,10 +130,12 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional(readOnly = true)
     public List<ItemDto> search(final String text) {
+        log.info("Поиск вещей по имени или описанию");
         if (text.isEmpty()) {
             return new ArrayList<>();
         }
-        return itemRepository.search(text.trim().toLowerCase()).stream().map(itemMapper::toItemDto).toList();
+        return itemRepository.search(text.trim().toLowerCase())
+                .stream().map(itemMapper::toItemDto).toList();
     }
 
     @Override

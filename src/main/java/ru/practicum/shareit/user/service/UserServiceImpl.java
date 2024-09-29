@@ -7,9 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
-import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.List;
@@ -22,6 +22,7 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
+
     UserMapper userMapper;
 
     @Override
@@ -51,6 +52,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto findById(final Integer userId) {
         log.info("Запрос на получение пользователя под id {}", userId);
         final User user = userRepository.findById(userId)
@@ -59,6 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserDto> findAll() {
         log.info("Запрос на получение списка пользователей");
         return userRepository.findAll().stream().map(userMapper::toUserDto).toList();
