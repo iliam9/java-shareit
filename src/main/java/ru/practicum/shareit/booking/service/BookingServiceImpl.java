@@ -30,7 +30,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Transactional
 public class BookingServiceImpl implements BookingService {
+
+    private static final Sort sort = Sort.by(Sort.Direction.DESC, "start");
 
     BookingRepository bookingRepository;
 
@@ -44,10 +47,7 @@ public class BookingServiceImpl implements BookingService {
 
     ItemMapper itemMapper;
 
-    final Sort sort = Sort.by(Sort.Direction.DESC, "start");
-
     @Override
-    @Transactional
     public BookingResponse saveRequest(final BookingRequest bookingRequest, final Integer userId) {
         log.info("Запрос на бронирование вещи с id " + bookingRequest.getItemId());
         final User user = userRepository.findById(userId)
@@ -67,7 +67,6 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    @Transactional
     public BookingResponse approved(final Integer ownerId, final Integer bookingId, final boolean approved) {
         log.info("Запрос на подтверждение бронирование вещи с id " + bookingId);
         final Booking booking = bookingRepository.findById(bookingId)

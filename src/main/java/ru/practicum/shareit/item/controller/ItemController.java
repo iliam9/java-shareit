@@ -25,9 +25,6 @@ import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
@@ -36,7 +33,7 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    static final String HEADER = "X-Sharer-User-Id";
+    private final String HEADER = "X-Sharer-User-Id";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -19,7 +19,7 @@ public class BookingController {
 
     private final BookingService bookingService;
 
-    static final String HEADER = "X-Sharer-User-Id";
+    private final String HEADER = "X-Sharer-User-Id";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

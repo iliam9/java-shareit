@@ -8,10 +8,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.group.CreateGroup;
 
-/**
- * TODO Sprint add-controllers.
- */
-
 @Data
 @EqualsAndHashCode(exclude = {"id"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
