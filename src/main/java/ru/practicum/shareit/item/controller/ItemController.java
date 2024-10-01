@@ -33,24 +33,24 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    private final String HEADER = "X-Sharer-User-Id";
+    private final String header = "X-Sharer-User-Id";
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto save(@RequestHeader(HEADER) @NotNull final Integer ownerId,
+    public ItemDto save(@RequestHeader(header) @NotNull final Integer ownerId,
                         @Validated(CreateGroup.class) @RequestBody final ItemDto itemDto) {
         return itemService.save(ownerId, itemDto);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto update(@RequestHeader(HEADER) @NotNull final Integer ownerId,
+    public ItemDto update(@RequestHeader(header) @NotNull final Integer ownerId,
                           @PathVariable @Positive final Integer itemId,
                           @RequestBody final ItemDto itemDto) {
         return itemService.update(ownerId, itemId, itemDto);
     }
 
     @GetMapping("/{itemId}")
-    public ItemResponse findById(@RequestHeader(HEADER) @NotNull final Integer ownerId,
+    public ItemResponse findById(@RequestHeader(header) @NotNull final Integer ownerId,
                                  @PathVariable @Positive final Integer itemId) {
         return itemService.findById(ownerId, itemId);
     }
@@ -62,7 +62,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> getItemsByOwnerId(@RequestHeader(HEADER) @NotNull final Integer ownerId) {
+    public List<ItemDto> getItemsByOwnerId(@RequestHeader(header) @NotNull final Integer ownerId) {
         return itemService.getItemsByOwnerId(ownerId);
     }
 
@@ -72,7 +72,7 @@ public class ItemController {
     }
 
     @PostMapping("/{itemId}/comment")
-    public CommentDto saveComment(@RequestHeader(HEADER) @NotNull final Integer userId,
+    public CommentDto saveComment(@RequestHeader(header) @NotNull final Integer userId,
                                   @PathVariable @NotNull final Integer itemId,
                                   @Valid @RequestBody final CommentDto commentDto) {
         return itemService.saveComment(userId, itemId, commentDto);
