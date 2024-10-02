@@ -1,26 +1,24 @@
 package ru.practicum.shareit.item.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.shareit.group.CreateGroup;
+
+import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(exclude = {"id"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ItemDto {
+public class CommentDto {
 
     Integer id;
 
-    @NotBlank(groups = {CreateGroup.class})
-    String name;
+    @NotBlank
+    String text;
 
-    @NotBlank(groups = {CreateGroup.class})
-    String description;
+    String authorName;
 
-    @NotNull(groups = {CreateGroup.class})
-    Boolean available;
+    LocalDateTime created;
 }
