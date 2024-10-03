@@ -27,7 +27,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Transactional
 public class ItemRequestServiceImpl implements ItemRequestService {
+
+    private static final Sort sort = Sort.by(Sort.Direction.DESC, "created");
 
     ItemRequestRepository itemRequestRepository;
 
@@ -41,10 +44,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     ItemMapper itemMapper;
 
-    final Sort sort = Sort.by(Sort.Direction.DESC, "created");
-
     @Override
-    @Transactional
     public ItemRequestResponseDto saveItemRequest(Integer userId, ItemRequestDto itemRequestDto) {
         log.info("Создание нового запроса");
         final User user = userRepository.findById(userId)
@@ -68,7 +68,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
             final ItemRequestResponseDto itemRequestResponseDto =
                     itemRequestMapper.toItemRequestResponceDto(itemRequest);
             final List<ItemDtoResponseForIR> items = itemRepository.findAllByRequest(itemRequest)
-                    .stream().map(itemMapper::toItemDtoResponceForIR).toList();
+                    .stream().map(itemMapper::toItemDtoResponseForIR).toList();
             itemRequestResponseDto.setItems(items);
             itemRequestResponseDto.setRequestor(userMapper.toUserDto(itemRequest.getRequestor()));
             list.add(itemRequestResponseDto);
@@ -103,7 +103,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         final ItemRequestResponseDto itemRequestResponseDto =
                 itemRequestMapper.toItemRequestResponceDto(itemRequest);
         final List<ItemDtoResponseForIR> items = itemRepository.findAllByRequest(itemRequest)
-                .stream().map(itemMapper::toItemDtoResponceForIR).toList();
+                .stream().map(itemMapper::toItemDtoResponseForIR).toList();
         itemRequestResponseDto.setItems(items);
         itemRequestResponseDto.setRequestor(userMapper.toUserDto(itemRequest.getRequestor()));
         log.info("Получен запрос с id = {} и все ответы на него", requestId);

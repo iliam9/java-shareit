@@ -103,7 +103,7 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new NotFoundException("Вещи с id = {} нет." + itemId));
         List<CommentDto> commentsDto = commentRepository.findAllByItemId(itemId).stream()
                 .map(commentMapper::toCommentDto).collect(Collectors.toList());
-        final ItemResponse itemResponse = itemMapper.toItemResponce(item, commentsDto);
+        final ItemResponse itemResponse = itemMapper.toItemResponse(item, commentsDto);
         if (item.getOwner().getId().equals(ownerId)) {
             Optional<Booking> last = bookingRepository.findTopByItemIdAndEndBeforeAndStatusInOrderByEndDesc(itemId,
                     LocalDateTime.now(), List.of(Status.APPROVED));

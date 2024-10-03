@@ -35,7 +35,7 @@ public class ItemMapper {
         return itemDto;
     }
 
-    public ItemResponse toItemResponce(final Item item, List<CommentDto> comments) {
+    public ItemResponse toItemResponse(final Item item, List<CommentDto> comments) {
 
         final ItemResponse itemResponse = new ItemResponse();
 
@@ -48,7 +48,7 @@ public class ItemMapper {
         return itemResponse;
     }
 
-    public ItemDtoResponseForIR toItemDtoResponceForIR(Item item) {
+    public ItemDtoResponseForIR toItemDtoResponseForIR(Item item) {
 
         final ItemDtoResponseForIR itemDtoResponseForIR = new ItemDtoResponseForIR();
 
