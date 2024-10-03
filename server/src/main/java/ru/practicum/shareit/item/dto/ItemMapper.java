@@ -35,27 +35,27 @@ public class ItemMapper {
         return itemDto;
     }
 
-    public ItemResponce toItemResponce(final Item item, List<CommentDto> comments) {
+    public ItemResponse toItemResponce(final Item item, List<CommentDto> comments) {
 
-        final ItemResponce itemResponce = new ItemResponce();
+        final ItemResponse itemResponse = new ItemResponse();
 
-        itemResponce.setId(item.getId());
-        itemResponce.setName(item.getName());
-        itemResponce.setDescription(item.getDescription());
-        itemResponce.setAvailable(item.getAvailable());
-        itemResponce.setComments(comments);
+        itemResponse.setId(item.getId());
+        itemResponse.setName(item.getName());
+        itemResponse.setDescription(item.getDescription());
+        itemResponse.setAvailable(item.getAvailable());
+        itemResponse.setComments(comments);
 
-        return itemResponce;
+        return itemResponse;
     }
 
-    public ItemDtoResponceForIR toItemDtoResponceForIR(Item item) {
+    public ItemDtoResponseForIR toItemDtoResponceForIR(Item item) {
 
-        final ItemDtoResponceForIR itemDtoResponceForIR = new ItemDtoResponceForIR();
+        final ItemDtoResponseForIR itemDtoResponseForIR = new ItemDtoResponseForIR();
 
-        itemDtoResponceForIR.setItemId(item.getId());
-        itemDtoResponceForIR.setOwnerId(item.getOwner().getId());
-        itemDtoResponceForIR.setName(item.getName());
+        itemDtoResponseForIR.setItemId(item.getId());
+        itemDtoResponseForIR.setOwnerId(item.getOwner().getId());
+        itemDtoResponseForIR.setName(item.getName());
 
-        return itemDtoResponceForIR;
+        return itemDtoResponseForIR;
     }
 }

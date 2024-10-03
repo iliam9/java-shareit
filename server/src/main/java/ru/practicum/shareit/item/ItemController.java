@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestHeader;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemResponce;
+import ru.practicum.shareit.item.dto.ItemResponse;
 import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
@@ -46,7 +46,7 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    public ItemResponce findById(@RequestHeader(HEADER) final Integer ownerId,
+    public ItemResponse findById(@RequestHeader(HEADER) final Integer ownerId,
                                  @PathVariable final Integer itemId) {
         return itemService.findById(ownerId, itemId);
     }

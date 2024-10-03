@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.shareit.booking.dto.BookingRequest;
-import ru.practicum.shareit.booking.dto.BookingResponce;
+import ru.practicum.shareit.booking.dto.BookingResponse;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -43,18 +43,18 @@ public class BookingServiceTest {
     @BeforeEach
     public void createUsersAndItems() {
         UserDto userDto1 = new UserDto();
-        userDto1.setName("Katia");
-        userDto1.setEmail("gromgrommolnia@mail.ru");
+        userDto1.setName("Ilya");
+        userDto1.setEmail("ilya@mail.ru");
         userService.save(userDto1);
 
         UserDto userDto2 = new UserDto();
-        userDto2.setName("Nika");
-        userDto2.setEmail("moemore@mail.ru");
+        userDto2.setName("Lusia");
+        userDto2.setEmail("lusia@mail.ru");
         userService.save(userDto2);
 
         UserDto userDto3 = new UserDto();
-        userDto3.setName("Mia");
-        userDto3.setEmail("midnight@mail.ru");
+        userDto3.setName("Misha");
+        userDto3.setEmail("misha@mail.ru");
         userService.save(userDto3);
 
         ItemDto itemDto1 = new ItemDto();
@@ -99,10 +99,10 @@ public class BookingServiceTest {
         bookingRequest.setStart(LocalDateTime.now().plusDays(1));
         bookingRequest.setEnd(LocalDateTime.now().plusDays(3));
 
-        final BookingResponce b = bookingService.saveRequest(bookingRequest, 1);
+        final BookingResponse b = bookingService.saveRequest(bookingRequest, 1);
 
         assertEquals("Vase", b.getItem().getName());
-        assertEquals("Katia", b.getBooker().getName());
+        assertEquals("Ilya", b.getBooker().getName());
         assertEquals(Status.WAITING, b.getStatus());
     }
 
@@ -112,7 +112,7 @@ public class BookingServiceTest {
     @DisplayName("BookingService_approved")
     void approvedTest() {
 
-        final BookingResponce b = bookingService.approved(1, 1, true);
+        final BookingResponse b = bookingService.approved(1, 1, true);
 
         assertEquals(Status.APPROVED, b.getStatus());
     }
@@ -123,9 +123,9 @@ public class BookingServiceTest {
     @DisplayName("BookingService_findById")
     void findByIdTest() {
 
-        final BookingResponce b = bookingService.findById(1, 1);
+        final BookingResponse b = bookingService.findById(1, 1);
 
-        final BookingResponce b2 = bookingService.findById(2, 1);
+        final BookingResponse b2 = bookingService.findById(2, 1);
 
         assertEquals(b, b2);
         assertEquals("Table", b.getItem().getName());
@@ -138,7 +138,7 @@ public class BookingServiceTest {
     @DisplayName("BookingService_findAllByUserId")
     void findAllByUserIdTest() {
 
-        final List<BookingResponce> b = bookingService.findAllByUserId(2, "all");
+        final List<BookingResponse> b = bookingService.findAllByUserId(2, "all");
 
         assertEquals(2, b.size());
     }
@@ -149,7 +149,7 @@ public class BookingServiceTest {
     @DisplayName("BookingService_findAllByOwnerId")
     void findAllByOwnerIdTest() {
 
-        final List<BookingResponce> b = bookingService.findAllByOwnerId(1, "all");
+        final List<BookingResponse> b = bookingService.findAllByOwnerId(1, "all");
 
         assertEquals(1, b.size());
     }

@@ -4,11 +4,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingMapper;
 import ru.practicum.shareit.booking.dto.BookingRequest;
-import ru.practicum.shareit.booking.dto.BookingResponce;
+import ru.practicum.shareit.booking.dto.BookingResponse;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.repository.BookingRepository;
@@ -20,7 +21,6 @@ import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.dto.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
-import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,7 +30,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Transactional
 public class BookingServiceImpl implements BookingService {
+
+    private static final Sort sort = Sort.by(Sort.Direction.DESC, "start");
 
     BookingRepository bookingRepository;
 
@@ -44,11 +47,8 @@ public class BookingServiceImpl implements BookingService {
 
     ItemMapper itemMapper;
 
-    final Sort sort = Sort.by(Sort.Direction.DESC, "start");
-
     @Override
-    @Transactional
-    public BookingResponce saveRequest(final BookingRequest bookingRequest, final Integer userId) {
+    public BookingResponse saveRequest(final BookingRequest bookingRequest, final Integer userId) {
         log.info("Запрос на бронирование вещи с id " + bookingRequest.getItemId());
         final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователя с id = {} нет." + userId));
@@ -63,12 +63,11 @@ public class BookingServiceImpl implements BookingService {
         }
         final Booking booking = bookingRepository.save(bookingMapper.toBooking(bookingRequest, user, item));
         log.info("Запрос на бронирование вещи с id {} успешно сохранен", bookingRequest.getItemId());
-        return bookingMapper.toBookingResponce(booking, userMapper.toUserDto(user), itemMapper.toItemDto(item));
+        return bookingMapper.toBookingResponse(booking, userMapper.toUserDto(user), itemMapper.toItemDto(item));
     }
 
     @Override
-    @Transactional
-    public BookingResponce approved(final Integer ownerId, final Integer bookingId, final boolean approved) {
+    public BookingResponse approved(final Integer ownerId, final Integer bookingId, final boolean approved) {
         log.info("Запрос на подтверждение бронирование вещи с id " + bookingId);
         final Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException("Такого запроса на бронирование не было"));
@@ -86,13 +85,13 @@ public class BookingServiceImpl implements BookingService {
         }
         final Booking updateBooking = bookingRepository.save(booking);
         log.info("Выполнен запрос на подтверждение бронирование вещи с id " + bookingId);
-        return bookingMapper.toBookingResponce(updateBooking,
+        return bookingMapper.toBookingResponse(updateBooking,
                 userMapper.toUserDto(booking.getBooker()), itemMapper.toItemDto(booking.getItem()));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public BookingResponce findById(final Integer userId, final Integer bookingId) {
+    public BookingResponse findById(final Integer userId, final Integer bookingId) {
         log.info("Запрос на получение информации о бронировании вещи с id " + bookingId);
         final Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException("Такого запроса на бронирование не было"));
@@ -101,13 +100,13 @@ public class BookingServiceImpl implements BookingService {
             throw new ValidationException("Посмотреть бронирование может только владелец вещи" +
                     "или человек, забронировавший ее");
         }
-        return bookingMapper.toBookingResponce(booking,
+        return bookingMapper.toBookingResponse(booking,
                 userMapper.toUserDto(booking.getBooker()), itemMapper.toItemDto(booking.getItem()));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingResponce> findAllByUserId(final Integer userId, final String state) {
+    public List<BookingResponse> findAllByUserId(final Integer userId, final String state) {
         log.info("Запрос на получение всех бронирований пользователя с id " + userId);
         userRepository.findById(userId);
         final List<Booking> bookings = switch (state) {
@@ -121,14 +120,14 @@ public class BookingServiceImpl implements BookingService {
             default -> throw new ValidationException("Неверно передан параметр state");
         };
         return bookings.stream()
-                .map(booking -> bookingMapper.toBookingResponce(booking,
+                .map(booking -> bookingMapper.toBookingResponse(booking,
                         userMapper.toUserDto(booking.getBooker()), itemMapper.toItemDto(booking.getItem())))
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingResponce> findAllByOwnerId(final Integer ownerId, final String state) {
+    public List<BookingResponse> findAllByOwnerId(final Integer ownerId, final String state) {
         log.info("Запрос на получение всех забронированных вещей пользователя с id " + ownerId);
         userRepository.findById(ownerId)
                 .orElseThrow(() -> new NotFoundException("Пользователя с id = {} нет." + ownerId));
@@ -146,7 +145,7 @@ public class BookingServiceImpl implements BookingService {
             default -> throw new ValidationException("Неверно передан параметр state");
         };
         return bookings.stream()
-                .map(booking -> bookingMapper.toBookingResponce(booking,
+                .map(booking -> bookingMapper.toBookingResponse(booking,
                         userMapper.toUserDto(booking.getBooker()), itemMapper.toItemDto(booking.getItem())))
                 .collect(Collectors.toList());
     }

@@ -16,7 +16,7 @@ import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.CommentMapper;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
-import ru.practicum.shareit.item.dto.ItemResponce;
+import ru.practicum.shareit.item.dto.ItemResponse;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
@@ -97,24 +97,24 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public ItemResponce findById(final Integer ownerId, final Integer itemId) {
+    public ItemResponse findById(final Integer ownerId, final Integer itemId) {
         log.info("Запрос на получение вещи с id {}", itemId);
         final Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("Вещи с id = {} нет." + itemId));
         List<CommentDto> commentsDto = commentRepository.findAllByItemId(itemId).stream()
                 .map(commentMapper::toCommentDto).collect(Collectors.toList());
-        final ItemResponce itemResponce = itemMapper.toItemResponce(item, commentsDto);
+        final ItemResponse itemResponse = itemMapper.toItemResponce(item, commentsDto);
         if (item.getOwner().getId().equals(ownerId)) {
             Optional<Booking> last = bookingRepository.findTopByItemIdAndEndBeforeAndStatusInOrderByEndDesc(itemId,
                     LocalDateTime.now(), List.of(Status.APPROVED));
-            itemResponce.setLastBooking(last.map(Booking::getEnd).orElse(null));
+            itemResponse.setLastBooking(last.map(Booking::getEnd).orElse(null));
 
             Optional<Booking> future = bookingRepository.findTopByItemIdAndStartAfterAndStatusInOrderByStartAsc(itemId,
                     LocalDateTime.now(), List.of(Status.APPROVED));
-            itemResponce.setNextBooking(future.map(Booking::getStart).orElse(null));
+            itemResponse.setNextBooking(future.map(Booking::getStart).orElse(null));
         }
         log.info("Вещь с id {} успешно получена", itemId);
-        return itemResponce;
+        return itemResponse;
     }
 
     @Override

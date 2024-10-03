@@ -16,7 +16,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.ShareItServer;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
-import ru.practicum.shareit.request.dto.ItemRequestResponceDto;
+import ru.practicum.shareit.request.dto.ItemRequestResponseDto;
 import ru.practicum.shareit.request.service.ItemRequestService;
 
 import java.time.LocalDateTime;
@@ -55,12 +55,12 @@ class ItemRequestControllerTest {
         ItemRequestDto requestDto = new ItemRequestDto();
         requestDto.setDescription("Bla-bla-bla");
 
-        ItemRequestResponceDto responceDto = new ItemRequestResponceDto();
-        responceDto.setId(1);
-        responceDto.setDescription("Bla-bla-bla");
-        responceDto.setCreated(LocalDateTime.now());
+        ItemRequestResponseDto responseDto = new ItemRequestResponseDto();
+        responseDto.setId(1);
+        responseDto.setDescription("Bla-bla-bla");
+        responseDto.setCreated(LocalDateTime.now());
 
-        when(itemRequestService.saveItemRequest(anyInt(), any(ItemRequestDto.class))).thenReturn(responceDto);
+        when(itemRequestService.saveItemRequest(anyInt(), any(ItemRequestDto.class))).thenReturn(responseDto);
 
         mockMvc.perform(post("/requests")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -78,7 +78,7 @@ class ItemRequestControllerTest {
     @DirtiesContext
     @DisplayName("ItemRequestController_getAllByUser")
     void getAllByUserTest() throws Exception {
-        List<ItemRequestResponceDto> requests = List.of(new ItemRequestResponceDto()); // создайте список
+        List<ItemRequestResponseDto> requests = List.of(new ItemRequestResponseDto()); // создайте список
 
         when(itemRequestService.getAllByUser(anyInt())).thenReturn(requests);
 
@@ -95,9 +95,9 @@ class ItemRequestControllerTest {
     @DirtiesContext
     @DisplayName("ItemRequestController_getAll")
     void getAllTest() throws Exception {
-        List<ItemRequestResponceDto> responceDtos = List.of(new ItemRequestResponceDto());
+        List<ItemRequestResponseDto> responcseDtos = List.of(new ItemRequestResponseDto());
 
-        when(itemRequestService.getAll(anyInt())).thenReturn(responceDtos);
+        when(itemRequestService.getAll(anyInt())).thenReturn(responcseDtos);
 
         mockMvc.perform(get("/requests/all")
                         .header(HEADER, 1))
@@ -112,7 +112,7 @@ class ItemRequestControllerTest {
     @DirtiesContext
     @DisplayName("ItemRequestController_getById")
     void getByIdTest() throws Exception {
-        ItemRequestResponceDto request = new ItemRequestResponceDto(); // создайте DTO
+        ItemRequestResponseDto request = new ItemRequestResponseDto(); // создайте DTO
 
         when(itemRequestService.getById(anyInt())).thenReturn(request);
 

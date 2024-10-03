@@ -20,14 +20,14 @@ public class ItemRequestMapper {
         return itemRequest;
     }
 
-    public ItemRequestResponceDto toItemRequestResponceDto(final ItemRequest itemRequest) {
+    public ItemRequestResponseDto toItemRequestResponceDto(final ItemRequest itemRequest) {
 
-        final ItemRequestResponceDto itemRequestResponceDto = new ItemRequestResponceDto();
+        final ItemRequestResponseDto itemRequestResponseDto = new ItemRequestResponseDto();
 
-        itemRequestResponceDto.setId(itemRequest.getId());
-        itemRequestResponceDto.setCreated(itemRequest.getCreated());
-        itemRequestResponceDto.setDescription(itemRequest.getDescription());
+        itemRequestResponseDto.setId(itemRequest.getId());
+        itemRequestResponseDto.setCreated(itemRequest.getCreated());
+        itemRequestResponseDto.setDescription(itemRequest.getDescription());
 
-        return itemRequestResponceDto;
+        return itemRequestResponseDto;
     }
 }

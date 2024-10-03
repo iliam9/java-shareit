@@ -8,12 +8,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.item.dto.ItemDtoResponceForIR;
+import ru.practicum.shareit.item.dto.ItemDtoResponseForIR;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestMapper;
-import ru.practicum.shareit.request.dto.ItemRequestResponceDto;
+import ru.practicum.shareit.request.dto.ItemRequestResponseDto;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.dto.UserMapper;
@@ -45,33 +45,33 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     @Transactional
-    public ItemRequestResponceDto saveItemRequest(Integer userId, ItemRequestDto itemRequestDto) {
+    public ItemRequestResponseDto saveItemRequest(Integer userId, ItemRequestDto itemRequestDto) {
         log.info("Создание нового запроса");
         final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователя с id = {} нет." + userId));
         final ItemRequest itemRequest = itemRequestRepository.save(itemRequestMapper.toItemRequest(itemRequestDto,
                 user));
         log.info("Успешно создан запрос на вещь");
-        final ItemRequestResponceDto itemRequestResponceDto =
+        final ItemRequestResponseDto itemRequestResponseDto =
                 itemRequestMapper.toItemRequestResponceDto(itemRequest);
-        itemRequestResponceDto.setRequestor(userMapper.toUserDto(user));
-        return itemRequestResponceDto;
+        itemRequestResponseDto.setRequestor(userMapper.toUserDto(user));
+        return itemRequestResponseDto;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<ItemRequestResponceDto> getAllByUser(Integer userId) {
+    public List<ItemRequestResponseDto> getAllByUser(Integer userId) {
         log.info("Запрос на получение всех запросов пользователя с id = {} и все ответы на них", userId);
         final List<ItemRequest> itemRequests = itemRequestRepository.findAllByRequestorId(userId, sort);
-        List<ItemRequestResponceDto> list = new ArrayList<>();
+        List<ItemRequestResponseDto> list = new ArrayList<>();
         for (ItemRequest itemRequest : itemRequests) {
-            final ItemRequestResponceDto itemRequestResponceDto =
+            final ItemRequestResponseDto itemRequestResponseDto =
                     itemRequestMapper.toItemRequestResponceDto(itemRequest);
-            final List<ItemDtoResponceForIR> items = itemRepository.findAllByRequest(itemRequest)
+            final List<ItemDtoResponseForIR> items = itemRepository.findAllByRequest(itemRequest)
                     .stream().map(itemMapper::toItemDtoResponceForIR).toList();
-            itemRequestResponceDto.setItems(items);
-            itemRequestResponceDto.setRequestor(userMapper.toUserDto(itemRequest.getRequestor()));
-            list.add(itemRequestResponceDto);
+            itemRequestResponseDto.setItems(items);
+            itemRequestResponseDto.setRequestor(userMapper.toUserDto(itemRequest.getRequestor()));
+            list.add(itemRequestResponseDto);
         }
         log.info("Все запросы пользователя с id = {} с предложенными вещами", userId);
         return list;
@@ -79,34 +79,34 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ItemRequestResponceDto> getAll(Integer userId) {
+    public List<ItemRequestResponseDto> getAll(Integer userId) {
         log.info("Запрос на получение всех запросов, кроме тех что сделал пользователь с id = {}",
                 userId);
         final List<ItemRequest> itemRequests = itemRequestRepository.findAllByRequestorIdNot(userId, sort);
         log.info("Получены все запросы кроме запросов пользователя с id = {}", userId);
-        final List<ItemRequestResponceDto> list = new ArrayList<>();
+        final List<ItemRequestResponseDto> list = new ArrayList<>();
         for (ItemRequest itemRequest : itemRequests) {
-           final ItemRequestResponceDto itemRequestResponceDto =
+           final ItemRequestResponseDto itemRequestResponseDto =
                    itemRequestMapper.toItemRequestResponceDto(itemRequest);
-           itemRequestResponceDto.setRequestor(userMapper.toUserDto(itemRequest.getRequestor()));
-           list.add(itemRequestResponceDto);
+           itemRequestResponseDto.setRequestor(userMapper.toUserDto(itemRequest.getRequestor()));
+           list.add(itemRequestResponseDto);
        }
         return list;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ItemRequestResponceDto getById(Integer requestId) {
+    public ItemRequestResponseDto getById(Integer requestId) {
         log.info("Запрос на получение запроса с id = {} и все ответы на него", requestId);
         final ItemRequest itemRequest = itemRequestRepository.findById(requestId)
                 .orElseThrow(() -> new NotFoundException("Запроса с id = {} нет." + requestId));
-        final ItemRequestResponceDto itemRequestResponceDto =
+        final ItemRequestResponseDto itemRequestResponseDto =
                 itemRequestMapper.toItemRequestResponceDto(itemRequest);
-        final List<ItemDtoResponceForIR> items = itemRepository.findAllByRequest(itemRequest)
+        final List<ItemDtoResponseForIR> items = itemRepository.findAllByRequest(itemRequest)
                 .stream().map(itemMapper::toItemDtoResponceForIR).toList();
-        itemRequestResponceDto.setItems(items);
-        itemRequestResponceDto.setRequestor(userMapper.toUserDto(itemRequest.getRequestor()));
+        itemRequestResponseDto.setItems(items);
+        itemRequestResponseDto.setRequestor(userMapper.toUserDto(itemRequest.getRequestor()));
         log.info("Получен запрос с id = {} и все ответы на него", requestId);
-        return itemRequestResponceDto;
+        return itemRequestResponseDto;
     }
 }

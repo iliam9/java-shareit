@@ -14,10 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemDtoResponceForIR;
+import ru.practicum.shareit.item.dto.ItemDtoResponseForIR;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
-import ru.practicum.shareit.request.dto.ItemRequestResponceDto;
+import ru.practicum.shareit.request.dto.ItemRequestResponseDto;
 import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.service.UserService;
@@ -80,7 +80,7 @@ public class ItemRequestServiceTest {
         final ItemRequestDto itemRequestDto = new ItemRequestDto();
         itemRequestDto.setDescription("Bla-bla-bla");
 
-        final ItemRequestResponceDto i = itemRequestService.saveItemRequest(1, itemRequestDto);
+        final ItemRequestResponseDto i = itemRequestService.saveItemRequest(1, itemRequestDto);
 
         assertEquals("Katia", i.getRequestor().getName());
     }
@@ -91,7 +91,7 @@ public class ItemRequestServiceTest {
     @DisplayName("ItemRequestService_getAllByUser")
     void getAllByUserTest() {
 
-        final List<ItemRequestResponceDto> i = itemRequestService.getAllByUser(1);
+        final List<ItemRequestResponseDto> i = itemRequestService.getAllByUser(1);
 
         assertEquals(2, i.size());
     }
@@ -106,7 +106,7 @@ public class ItemRequestServiceTest {
         itemRequestDto.setDescription("Bla-bla-bla");
         itemRequestService.saveItemRequest(2, itemRequestDto);
 
-        final List<ItemRequestResponceDto> i = itemRequestService.getAll(1);
+        final List<ItemRequestResponseDto> i = itemRequestService.getAll(1);
 
         assertEquals(2, i.size());
     }
@@ -117,9 +117,9 @@ public class ItemRequestServiceTest {
     @DisplayName("ItemRequestService_getById")
     void getByIdTest() {
 
-        final ItemRequestResponceDto i = itemRequestService.getById(3);
+        final ItemRequestResponseDto i = itemRequestService.getById(3);
 
-        final List<ItemDtoResponceForIR> items = i.getItems();
+        final List<ItemDtoResponseForIR> items = i.getItems();
 
         assertEquals("coffee maker", i.getDescription());
         assertEquals(1, items.size());

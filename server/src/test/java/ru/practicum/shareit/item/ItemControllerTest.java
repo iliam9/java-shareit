@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.ShareItServer;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemResponce;
+import ru.practicum.shareit.item.dto.ItemResponse;
 import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
@@ -89,13 +89,13 @@ class ItemControllerTest {
     @DirtiesContext
     @DisplayName("ItemController_findById")
     void findByIdTest() throws Exception {
-        ItemResponce itemResponce = new ItemResponce();
-        when(itemService.findById(anyInt(), anyInt())).thenReturn(itemResponce);
+        ItemResponse itemResponse = new ItemResponse();
+        when(itemService.findById(anyInt(), anyInt())).thenReturn(itemResponse);
 
         mockMvc.perform(get("/items/1")
                         .header(HEADER, 1))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(itemResponce.getId()));
+                .andExpect(jsonPath("$.id").value(itemResponse.getId()));
 
         verify(itemService, times(1)).findById(anyInt(), anyInt());
     }

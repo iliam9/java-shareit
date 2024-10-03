@@ -34,18 +34,18 @@ public class ItemServiceTest {
     @BeforeEach
     public void createUsersAndItems() {
         UserDto userDto1 = new UserDto();
-        userDto1.setName("Katia");
-        userDto1.setEmail("gromgrommolnia@mail.ru");
+        userDto1.setName("Ilya");
+        userDto1.setEmail("ilya@mail.ru");
         userService.save(userDto1);
 
         UserDto userDto2 = new UserDto();
-        userDto2.setName("Nika");
-        userDto2.setEmail("moemore@mail.ru");
+        userDto2.setName("Lusia");
+        userDto2.setEmail("lusia@mail.ru");
         userService.save(userDto2);
 
         UserDto userDto3 = new UserDto();
-        userDto3.setName("Mia");
-        userDto3.setEmail("midnight@mail.ru");
+        userDto3.setName("Misha");
+        userDto3.setEmail("misha@mail.ru");
         userService.save(userDto3);
 
         ItemDto itemDto1 = new ItemDto();

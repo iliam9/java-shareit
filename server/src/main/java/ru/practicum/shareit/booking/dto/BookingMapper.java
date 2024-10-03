@@ -25,18 +25,18 @@ public class BookingMapper {
         return booking;
     }
 
-    public BookingResponce toBookingResponce(final Booking booking, final UserDto userDto,
+    public BookingResponse toBookingResponse(final Booking booking, final UserDto userDto,
                                              final ItemDto itemDto) {
 
-        final BookingResponce bookingResponce = new BookingResponce();
+        final BookingResponse bookingResponse = new BookingResponse();
 
-        bookingResponce.setId(booking.getId());
-        bookingResponce.setStart(booking.getStart());
-        bookingResponce.setEnd(booking.getEnd());
-        bookingResponce.setItem(itemDto);
-        bookingResponce.setBooker(userDto);
-        bookingResponce.setStatus(booking.getStatus());
+        bookingResponse.setId(booking.getId());
+        bookingResponse.setStart(booking.getStart());
+        bookingResponse.setEnd(booking.getEnd());
+        bookingResponse.setItem(itemDto);
+        bookingResponse.setBooker(userDto);
+        bookingResponse.setStatus(booking.getStatus());
 
-        return bookingResponce;
+        return bookingResponse;
     }
 }
