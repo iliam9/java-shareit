@@ -1,24 +1,22 @@
-package shareitgateway.item.dto;
+package ru.practicum.shareitgateway.booking.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
 @Data
-@EqualsAndHashCode(exclude = {"id"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CommentDto {
-
-    Integer id;
+public class BookingRequest {
 
     @NotBlank
-    String text;
+    LocalDateTime start;
 
-    String authorName;
+    @NotBlank
+    LocalDateTime end;
 
-    LocalDateTime created;
+    @NotBlank
+    Integer itemId;
 }

@@ -1,4 +1,4 @@
-package shareitgateway.item;
+package ru.practicum.shareitgateway.item;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package shareitgateway.user;
+package ru.practicum.shareitgateway.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package shareitgateway.request;
+package ru.practicum.shareitgateway.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;

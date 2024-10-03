@@ -1,7 +1,7 @@
-package shareitgateway.item.dto;
+package ru.practicum.shareitgateway.user.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +11,7 @@ import ru.practicum.shareitgateway.group.CreateGroup;
 @Data
 @EqualsAndHashCode(exclude = {"id"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ItemDto {
+public class UserDto {
 
     Integer id;
 
@@ -19,10 +19,7 @@ public class ItemDto {
     String name;
 
     @NotBlank(groups = {CreateGroup.class})
-    String description;
-
-    @NotNull(groups = {CreateGroup.class})
-    Boolean available;
-
-    Integer requestId;
+    @Email(groups = {CreateGroup.class})
+    @Email(message = "Емейл должен содержать @ и наименование")
+    String email;
 }

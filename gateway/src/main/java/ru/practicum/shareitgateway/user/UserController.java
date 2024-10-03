@@ -1,4 +1,4 @@
-package shareitgateway.user;
+package ru.practicum.shareitgateway.user;
 
 import jakarta.validation.Valid;
 import lombok.AccessLevel;

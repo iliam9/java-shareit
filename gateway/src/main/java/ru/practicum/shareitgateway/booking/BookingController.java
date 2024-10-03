@@ -1,4 +1,4 @@
-package shareitgateway.booking;
+package ru.practicum.shareitgateway.booking;
 
 import org.springframework.http.HttpStatus;
 import jakarta.validation.constraints.NotNull;

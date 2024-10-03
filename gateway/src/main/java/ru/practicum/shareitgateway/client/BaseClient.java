@@ -1,4 +1,4 @@
-package shareitgateway.client;
+package ru.practicum.shareitgateway.client;
 
 import java.util.List;
 import java.util.Map;
